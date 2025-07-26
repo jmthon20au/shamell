@@ -1,0 +1,921 @@
+/* Global Styles & Variables (unchanged for consistency) */
+:root {
+    --primary-color: #007bff; /* A vibrant blue, but can be changed */
+    --secondary-color: #706c7d; /* A subtle grey */
+    --accent-color: gold; /* A complementary green for highlights */
+    --dark-bg: #000000; /* Deep charcoal for header/footer */
+    --light-bg: #ffffff; /* body */
+    --text-color: #010407; /* Dark grey for body text */
+    --white-color: #f3f3f3; /* Pure white */
+    --border-color: #010307; /* Light grey for borders */
+    --shadow-light: 0 3px 5px rgb(0, 0, 0);
+    --shadow-medium: 0 5px 15px rgba(48, 224, 13, 0.1);
+    --transition-speed: 0.3s ease-out;
+
+    /* Font Families */
+    --font-arabic: 'Cairo', sans-serif;
+    --font-latin: 'Poppins', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-arabic), var(--font-latin);
+    line-height: 1;
+    color: var(--text-color);
+    background-color: var(--light-bg);
+    direction: rtl;
+    text-align: right;
+    scroll-behavior: smooth;
+    overflow-x: hidden; /* Prevent horizontal scroll when sidebar is open */
+}
+
+.container {
+    width: 80%;
+    max-width: 1500px;
+    margin: auto;
+    overflow: hidden;
+    padding: 3px 0;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+/* Buttons (unchanged) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 25px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 2.05em;
+    cursor: pointer;
+    border: none;
+    transition: background-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.btn i {
+    margin:  8px;
+}
+
+.primary-btn {
+    background: var(--primary-color);
+    color: var(--white-color);
+    box-shadow: var(--shadow-light);
+}
+
+.primary-btn:hover {
+    background-color: #18a023;
+    color:#000000;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+}
+
+.secondary-btn {
+    background: gold;
+    color: rgb(0, 0, 0);
+    border: 1.5px solid rgb(43, 13, 153);
+    width: auto;
+    height: 85px;
+    border-radius: 20px;
+}
+
+.secondary-btn:hover {
+    background-color:black;
+    color: gold;
+    transform: translateY(px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* --- Header --- top*/
+header {
+    background: var(--dark-bg);
+    color: gold;
+    padding: 15px 0;
+    box-shadow: var(--shadow-medium);
+    position: sticky;
+    top: 10;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap; /* Prevent wrapping for core elements */
+}
+
+.brand-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.site-logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    animation: fadeInScale 2s ease-out forwards;
+    box-shadow: 0 0 0 1px gold;
+}
+.site-logo:hover {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    animation: fadeInScale 2s ease-out forwards;
+    box-shadow: 0 0 0 1px rgb(253, 4, 4);
+}
+.brand-info .text-content {
+    text-align: right;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 700;
+    line-height: 1.2;
+    animation: slideInDown 1s ease-out forwards;
+}
+
+.tagline {
+    font-size: 0.9em;
+    font-weight: 300;
+    color: gold;
+    margin-top: 1px;
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+    background: none;
+    border: none;
+    color: var(--white-color);
+    font-size: 2em;
+    cursor: pointer;
+    padding: 10px;
+    display: block; /* Always show hamburger button */
+    transition: color var(--transition-speed);
+    order: -1; /* Place hamburger on the far right (start for RTL) */
+}
+
+.hamburger-btn:hover {
+    color: gold;
+}
+
+/* --- Sidebar Navigation --- */
+#sidebar {
+    height: 100%; /* Full height */
+    width: 0; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top */
+    top: 0;
+    right: 0; /* Start from the right for RTL */
+    background-color: var(--dark-bg);
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); /* Smooth slide animation */
+    padding-top: 60px; /* Space from top */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.3); /* Shadow for depth */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Push footer to bottom */
+}
+
+#sidebar.open {
+    width: 280px; /* Width when open */
+    padding-right: 20px; /* Add padding when open */
+}
+
+.sidebar-close-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px; /* Position close button on the left for RTL */
+    background: none;
+    border: none;
+    font-size: 2.2em;
+    color: var(--white-color);
+    cursor: pointer;
+    transition: color var(--transition-speed);
+}
+
+.sidebar-close-btn:hover {
+    color: var(--primary-color);
+}
+
+#sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+}
+
+#sidebar nav ul li {
+    margin: 15px 0;
+}
+
+#sidebar nav ul li a {
+    padding: 12px 20px;
+    text-decoration: none;
+    font-size: 1.3em;
+    color: var(--white-color);
+    display: block;
+    transition: background-color var(--transition-speed), color var(--transition-speed), transform var(--transition-speed);
+    border-radius: 8px;
+    text-align: right; /* Align text right in sidebar */
+    position: relative;
+    overflow: hidden; /* For hover effect */
+}
+
+#sidebar nav ul li a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0; /* Start from right for RTL */
+    width: 0;
+    height: 100%;
+    background-color: rgba(0, 123, 255, 0.2); /* Subtle hover background */
+    transition: width var(--transition-speed);
+    z-index: -1;
+    border-radius: 8px;
+}
+
+#sidebar nav ul li a:hover::before {
+    width: 100%;
+}
+
+#sidebar nav ul li a:hover {
+    color: var(--primary-color);
+    transform: translateX(-5px); /* Slide effect on hover */
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: none;
+    color: rgba(12, 8, 235, 0.7);
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.sidebar-social-links {
+    margin-top: 10px;
+}
+
+.sidebar-social-links a {
+    color: rgba(255,255,255,0.7);
+    font-size: 1.5em;
+    margin: 0 8px;
+    transition: color var(--transition-speed), transform var(--transition-speed);
+}
+
+.sidebar-social-links a:hover {
+    color:blue;
+    transform: translateY(-3px);
+}
+
+/* Overlay */
+#overlay {
+    position: fixed;
+    display: none; /* Hidden by default */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+    z-index: 1500; /* Sit on top of page content */
+    cursor: pointer;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+}
+
+#overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+/* --- Main Content Sections (unchanged for consistency) --- */
+section {
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+}
+
+section:nth-of-type(even) {
+    background-color: var(--white-color);
+}
+
+section h2 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    color: red;
+    position: relative;
+    display: inline-block;
+    font-weight: 700;
+}
+
+section h2::after {
+    content: '';
+    position: absolute;
+    width: 180px;
+    height: 2px;
+    background:red;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.welcome-section {
+    padding: 50px 0;
+    background-color: black;
+    text-align: center;
+    border-bottom: 5px solid gold;
+}
+
+.welcome-section p {
+    font-size: 2em;
+    line-height: 1.9;
+    margin-bottom: 30px;
+    color: gold;
+}
+
+/* About, Sites, Articles, Contact, Footer styles as before */
+.about-section .about-content {
+    max-width: 750px;
+    margin: 0 auto;
+    font-size: 1.5em;
+    line-height: 1.9;
+    color: white;
+    background-color: #404fa0;
+    border-radius: 30px;
+}
+.about-section .about-content:hover{
+    background-color: #ffffff;
+    color: #404fa0;
+}
+.site-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    justify-content: center;
+}
+.site-card {
+    background: #7f00ff;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-light);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    border-bottom: 5px solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+
+.site-card i {
+    font-size: 3.5em;
+    color: red;
+    margin-bottom: 20px;
+    background: rgb(0, 0, 0);
+    border-radius: 50%;
+    padding: 15px;
+    transition: color var(--transition-speed), background var(--transition-speed);
+}
+.site-card i:hover {
+    font-size: 4em;
+    color: gold;
+    margin-bottom: 20px;
+    background: rgb(245, 239, 239);
+    border-radius: 50%;
+    padding: 15px;
+    transition: color var(--transition-speed), background var(--transition-speed);
+}
+.site-card i1 {
+margin-right: 10px;
+}
+
+
+.site-card h3 {
+    margin-bottom: 15px;
+    font-size: 1.7em;
+    color: black;
+    font-weight: 600;
+}
+.site-card h3:hover {
+    margin-bottom: 15px;
+    font-size: 2em;
+    color: gold;
+    font-weight: 600;
+}
+
+.site-card p {
+    font-size: 1.5em;
+    color: white;
+    flex-grow: 1;
+    margin-bottom: 20px;
+    line-height: 1.9;
+}
+.site-card p:hover {
+    color: gold;
+    flex-grow: 1;
+    margin-bottom: 20px;
+    line-height: 1.9;
+}
+.article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    justify-content: center;
+}
+
+.article-card {
+    background: gold;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+    text-align: right;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    display: flex;
+    flex-direction: column;
+    color: #f3f3f3;
+}
+
+
+.article-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.article-card h3 {
+    padding: 20px 20px 10px;
+    font-size: 1.5em;
+    color: var(--dark-bg);
+    font-weight: 600;
+}
+
+.article-card p {
+    padding: 0 20px 15px;
+    font-size: 1.5em;
+    color: black;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+.article-card .btn {
+    margin: 10 20px 20px;
+    align-self: flex-end;
+    color: gold;
+    background-color: #000000;
+}
+.contact-section p {
+    font-size: 1.5em;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+.contact-section h2 {
+    font-size: 2em;
+    color: #007bff;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin: 9px;
+  border-radius: 90px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+/* Hover effect */
+.social-btn {
+  /* باقي التنسيقات */
+  transition: 0.3s ease;
+}
+
+.social-btn:hover {
+  opacity: 0.85;
+  transform: scale(1.1); /* يكبر بنسبة 10% */
+}
+/* Facebook */
+.facebook {
+  background-color: #1877F2;
+  color: white;
+}
+
+/* Twitter */
+.twitter {
+  background-color: #1DA1F2;
+  color: white;
+}
+
+/* Instagram */
+.instagram {
+  background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+  color: white;
+}
+
+/* WhatsApp */
+.whatsapp {
+  background-color: #25D366;
+  color: white;
+}
+
+/* Telegram */
+.telegram {
+  background-color: #0088cc;
+  color: white;
+}
+
+/* YouTube */
+.youtube {
+  background-color: #FF0000;
+  color: white;
+}
+
+/* Snapchat */
+.snapchat {
+  background-color: #FFFC00;
+  color: black;
+}
+
+/* TikTok */
+.tiktok {
+  background-color: #010101;
+  color: white;
+}
+
+/* LinkedIn */
+.linkedin {
+  background-color: #0077B5;
+  color: white;
+}
+/* داخل كل كلاس لموقع تواصلي */
+.facebook:hover {
+  background-color: white;
+  color: #1877F2;
+}
+
+.twitter:hover {
+  background-color: white;
+  color: #1DA1F2;
+}
+
+.instagram:hover {
+  background: white;
+  color: #d62976; /* تقدر تختار أي لون من تدرج الانستغرام */
+}
+
+.whatsapp:hover {
+  background-color: white;
+  color: #25D366;
+}
+
+.telegram:hover {
+  background-color: white;
+  color: #0088cc;
+}
+
+.youtube:hover {
+  background-color: white;
+  color: #FF0000;
+}
+
+.snapchat:hover {
+  background-color: white;
+  color: #888609;
+}
+
+.tiktok:hover {
+  background-color: white;
+  color: #000000;
+}
+
+.linkedin:hover {
+  background-color: white;
+  color: #0077B5;
+}
+.site-footer {
+  background-color: #111;
+  color: #ccc;
+  text-align: center;
+  padding: 25px 10px;
+  font-family: 'Tahoma', sans-serif;
+  border-top: 10px solid gold;
+}
+
+.footer-rights, .footer-dev, .footer-links {
+  margin: 10px 0;
+      font-size: 1.2em;
+
+}
+
+.dev-link {
+    font-size: 1.5em;
+  color: #0ff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+  line-height: 2;
+}
+
+.dev-link:hover {
+  color: gold;
+}
+
+.policy-btn {
+  background-color: transparent;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 8px 14px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.policy-btn i {
+  margin-right: 6px;
+}
+
+.policy-btn:hover {
+  background-color: #222;
+  color: #0ff;
+  border-color: #0ff;
+}
+
+/* المودال */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background-color: #fff;
+  color: #333;
+  line-height: 1.5;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.close-btn {
+  position: 10px;
+  top: 10px; right: 15px;
+  font-size: 40px;
+  cursor: pointer;
+  color: #f50606;
+}
+
+#modal-icon {
+  font-size: 35px;
+  margin-bottom: 10px;
+  color: #0aa;
+}
+
+/* Animations */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Scroll-to-Top Button CSS */
+.scroll-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    font-size: 1.6em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-speed), visibility var(--transition-speed), transform var(--transition-speed);
+    z-index: 1000;
+    box-shadow: var(--shadow-medium);
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-5px);
+    background-color: #0056b3;
+}
+
+.scroll-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Responsive Design (adjusted for sidebar) */
+@media (min-width: 993px) {
+    /* Hide hamburger button on large screens if full nav is desired */
+    .hamburger-btn {
+        display: none;
+    }
+    /* If you want a full nav on desktop, you'd add it back here,
+       but the current request is for sidebar always.
+       If you want the nav to be visible on desktop AND sidebar on mobile,
+       this becomes more complex with media queries. For simplicity,
+       we're making it a sidebar-only site for now.
+    */
+}
+
+@media (max-width: 992px) {
+    .header-content {
+        justify-content: space-between; /* Keep logo and hamburger separate */
+        align-items: center;
+    }
+    .brand-info {
+        flex-grow: 1; /* Allow brand info to take space */
+        padding-left: 0; /* No special padding */
+    }
+    header h1 {
+        font-size: 1.6em;
+    }
+    .tagline {
+        font-size: 0.85em;
+    }
+    /* Main sections as before */
+    section h2 {
+        font-size: 2.2em;
+    }
+    .site-card, .article-card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .site-logo {
+        width: 60px;
+        height: 60px;
+    }
+    header h1 {
+        font-size: 1.4em;
+    }
+    .tagline {
+        font-size: 0.8em;
+    }
+    section {
+        padding: 60px 0;
+    }
+    section h2 {
+        font-size: 2em;
+        margin-bottom: 30px;
+    }
+    .btn {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+    .site-cards, .article-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .site-card i {
+        font-size: 3em;
+    }
+    .social-links a {
+        font-size: 2.5em;
+        margin: 0 10px;
+    }
+    .scroll-to-top {
+        width: 50px;
+        height: 50px;
+        font-size: 1.4em;
+        bottom: 20px;
+        right: 20px;
+    }
+    /* Sidebar adjustments for smaller screens */
+    #sidebar.open {
+        width: 250px; /* Slightly smaller width on mobile */
+    }
+    .sidebar-close-btn {
+        font-size: 1.8em; /* Smaller close button */
+        top: 15px;
+        left: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-logo {
+        width: 50px;
+        height: 50px;
+    }
+    header h1 {
+        font-size: 1.2em;
+    }
+    .tagline {
+        font-size: 0.75em;
+    }
+    .brand-info {
+        gap: 10px;
+    }
+    .btn {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    .site-card, .article-card {
+        padding: 20px;
+    }
+    .site-card h3, .article-card h3 {
+        font-size: 1.3em;
+    }
+}
+
+/* الحاوية لتوسيط الزر */
+.contact-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px; /* أو حسب احتياجك */
+  text-align: center;
+}
+
+/* الزر */
+.fancy-contact-btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: bold;
+  color: gold;
+  background: linear-gradient(135deg, #21242A, #07100C);
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  box-shadow: 0 8px 20px rgba(7, 255, 172, 0.3);
+  position: relative;
+}
+
+.fancy-contact-btn i {
+  margin-right: 8px;
+}
+
+.fancy-contact-btn:hover {
+  color: #07100C;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(0, 204, 136, 0.5);
+  background: gold;
+}

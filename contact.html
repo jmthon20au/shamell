@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تواصل معنا</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .card-method {
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .card-method:hover {
+      box-shadow: 0 0 10px #0d6efd77;
+    }
+
+    .border-success {
+      border: 2px solid #198754 !important;
+    }
+
+    .contact-button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .fancy-contact-btn {
+      display: inline-block;
+      padding: 14px 200px;
+      font-size: 18px;
+      font-weight: bold;
+      color: gold;
+      background: linear-gradient(135deg, #21242A, #07100C);
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 20px rgba(7, 255, 172, 0.3);
+      position: relative;
+    }
+
+    .fancy-contact-btn i {
+      margin-left: 8px;
+    }
+
+    .fancy-contact-btn:hover {
+      color: #07100C;
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(0, 204, 136, 0.5);
+      background: gold;
+    }
+
+    .custom-label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+      color: #333;
+      font-size: 16px;
+      text-align: right;
+    }
+
+    .custom-input {
+      border-radius: 15px;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: 0.3s;
+    }
+
+    .custom-input:focus {
+      border-color: #00cc88;
+      box-shadow: 0 0 10px rgba(0, 204, 136, 0.3);
+    }
+
+    textarea.custom-input {
+      resize: none;
+    }
+    .site-footer {
+  background-color: #07100C;
+  color: #07f1bf;
+  text-align: center;
+  padding: 1px 1px;
+  font-family: 'Tahoma', sans-serif;
+}
+.footer-rights, .footer-dev, .footer-links {
+  margin: 10px 0;
+      font-size: 1em;
+}
+.dev-link {
+    font-size: 1.5em;
+  color: rgb(0, 4, 255);
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+  line-height: 2;
+}
+.dev-link:hover {
+  color: gold;
+}
+/* Animations */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+  </style>
+</head>
+<body class="text-center p-4">
+
+  <div class="container">
+    <h3 class="mb-4">👋 أهلاً بك في صفحة تواصل معنا</h3>
+    <p class="mb-4">قم بملئ البيانات واضغط إرسال</p>
+
+    <form id="contactForm" onsubmit="sendData(event)">
+      <div class="row justify-content-center" id="formFields"></div>
+
+      <div class="col-md-6 mt-3 text-start" id="imageField" style="display: none;">
+        <label class="custom-label"><i class="fas fa-image"></i> إرفاق صورة (اختياري)</label>
+        <input type="file" name="image" class="form-control custom-input">
+      </div>
+
+      <div class="contact-button-container mt-4">
+        <button type="submit" id="submitBtn" class="fancy-contact-btn">
+          <i class="fas fa-paper-plane"></i> إرسال
+        </button>
+      </div>
+    </form>
+
+    <div class="contact-button-container">
+      <a href="index.html" class="fancy-contact-btn">
+        <i class="fas fa-arrow-left"></i> رجوع للصفحة الرئيسية
+      </a>
+    </div>
+  </div>
+
+  <audio id="successSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bfa1bd3f75.mp3?filename=correct-2-46134.mp3"></audio>
+  <audio id="errorSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_456b92760e.mp3?filename=error-2-36047.mp3"></audio>
+<footer class="site-footer">
+  <p class="footer-rights">© 2025 جميع الحقوق محفوظة لموقع شامل.</p>
+
+  <p class="footer-dev">
+    <i class="fas fa-code">
+    <a href="https://www.ali-altaee.free.nf" target="_blank" class="dev-link"> Ali Altaee</a></p></i>
+</footer>
+  <script>
+  
+    let selectedMethod = null;
+    let config = {};
+    let submitted = false;
+
+    fetch('config.json').then(res => res.json()).then(data => config = data);
+
+    function selectMethod(method) {
+      selectedMethod = method;
+      document.getElementById("formFields").innerHTML = `
+        <div class="col-md-5 mb-3 text-start">
+          <label class="custom-label"><i class="fas fa-user"></i> الاسم الكامل</label>
+          <input name="name" class="form-control custom-input" placeholder="اكتب اسمك الكامل" required>
+        </div>
+
+        <div class="col-md-5 mb-3 text-start">
+          <label class="custom-label"><i class="fab fa-telegram-plane"></i> يوزر التلجرام</label>
+          <input name="telegram" class="form-control custom-input" placeholder="@username" required>
+        </div>
+
+        <div class="col-md-10 mb-3 text-start">
+          <label class="custom-label"><i class="fas fa-heading"></i> عنوان الرسالة</label>
+          <input name="subject" class="form-control custom-input" placeholder="اكتب عنواناً مناسباً" required>
+        </div>
+
+        <div class="col-md-10 mb-3 text-start">
+          <label class="custom-label"><i class="fas fa-comment-dots"></i> نص الرسالة</label>
+          <textarea name="message" class="form-control custom-input" placeholder="اكتب مشكلتك أو رسالتك هنا" rows="4" required></textarea>
+        </div>
+      `;
+      document.getElementById("imageField").style.display = "block";
+    }
+
+    async function sendData(e) {
+      e.preventDefault();
+      if (submitted) return;
+      if (!selectedMethod) {
+        document.getElementById("errorSound").play();
+        return Swal.fire("خطأ", "يرجى اختيار طريقة الإرسال أولاً", "warning");
+      }
+
+      const form = document.getElementById("contactForm");
+      const formData = new FormData(form);
+      const name = formData.get("name").trim();
+      const telegramUser = formData.get("telegram").trim();
+      const subject = formData.get("subject").trim();
+      const message = formData.get("message").trim();
+      const image = formData.get("image");
+
+      if (!name || !telegramUser || !subject || !message) {
+        document.getElementById("errorSound").play();
+        return Swal.fire("⚠️ تنبيه", "يرجى ملء جميع الحقول المطلوبة", "warning");
+      }
+
+      if (!telegramUser.startsWith("@")) {
+        document.getElementById("errorSound").play();
+        return Swal.fire("⚠️ تنبيه", "يرجى كتابة اليوزر مع @ (مثال: @username)", "warning");
+      }
+
+      submitted = true;
+      document.getElementById("submitBtn").disabled = true;
+
+      const fullMessage = `👤 الاسم: ${name}\n📌 العنوان: ${subject}\n📝 الرسالة: ${message}\n🔗 يوزر التلجرام: ${telegramUser}`;
+
+      await fetch(`https://api.telegram.org/bot${config.telegram_token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: config.chat_id, text: fullMessage })
+      });
+
+      if (image && image.name) {
+        const imgForm = new FormData();
+        imgForm.append("chat_id", config.chat_id);
+        imgForm.append("photo", image);
+        await fetch(`https://api.telegram.org/bot${config.telegram_token}/sendPhoto`, {
+          method: "POST",
+          body: imgForm
+        });
+      }
+
+      document.getElementById("successSound").play();
+
+      let time = 15;
+      Swal.fire({
+        icon: "success",
+        title: "✅ تم إرسال رسالتك",
+        html: `سوف تعود للصفحة الرئيسية خلال <b><span id="timer">${time}</span></b> ثانية`,
+        timer: time * 1000,
+        timerProgressBar: true,
+        didOpen: () => {
+          const counter = setInterval(() => {
+            time--;
+            document.getElementById("timer").textContent = time;
+            if (time <= 0) clearInterval(counter);
+          }, 1000);
+        },
+        willClose: () => window.location.href = "index.html"
+      });
+    }
+
+    window.onload = () => selectMethod('telegram');
+    
+  </script>
+</body>
+</html>
